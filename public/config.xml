@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<theme>
+    <name>logica-ludica</name>
+    <version>1.5</version>
+    <compatibility>2.2-r6bac05f9a6089e750bc88d7e57a9913b9bc36072</compatibility>
+    <author>logica-ludica</author>
+    <author-url>https;//aulas.logica-ludica.com</author-url>
+    <license>Creative Commons by-sa</license>
+    <license-url>http://creativecommons.org/licenses/by-sa/4.0/</license-url>
+    <description/>
+    <extra-head><![CDATA[<meta name="viewport" content="width=device-width, initial-scale=1" />
+    ]]></extra-head>
+    <extra-body><![CDATA[<script type="text/javascript" src="_style_js.js"></script>]]></extra-body>
+    <edition-extra-head><![CDATA[<script type="text/javascript">if (typeof(exe_style)!='undefined' && exe_style.indexOf("content.css")!=-1) document.write('<scr'+'ipt type="text/javascript" src="'+exe_style.replace("content.css","_style_js.js")+'"></scr'+'ipt>')</script>]]></edition-extra-head>
+</theme>

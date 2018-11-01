@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+<link rel="stylesheet" type="text/css" href="base.css" />
+<link rel="stylesheet" type="text/css" href="exe_highlighter.css" />
+<link rel="stylesheet" type="text/css" href="content.css" />
+<link rel="stylesheet" type="text/css" href="nav.css" />
+<meta http-equiv="content-type" content="text/html;  charset=utf-8" />
+<title>To backtrack or not to backtrack (2a. Parte) </title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link rel="license" type="text/html" href="http://creativecommons.org/licenses/by-sa/4.0/" />
+<meta name="generator" content="eXeLearning 2.2 - exelearning.net" />
+<!--[if lt IE 9]><script type="text/javascript" src="exe_html5.js"></script><![endif]-->
+<script type="text/javascript" src="exe_jquery.js"></script>
+<script type="text/javascript" src="exe_highlighter.js"></script>
+<script type="text/javascript" src="common_i18n.js"></script>
+<script type="text/javascript" src="common.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+<body class="exe-web-site" id="exe-node-0"><script type="text/javascript">document.body.className+=" js"</script>
+<div id="content">
+<p id="skipNav"><a href="#main" class="sr-av">Saltar la navegación</a></p>
+<section id="emptyHeader"></section>
+<nav id="siteNav">
+<ul>
+   <li id="active"><a href="index.html" class="active no-ch main-node">To backtrack or not to backtrack (2a. Parte)</a></li>
+</ul>
+</nav>
+<div id='topPagination'>
+<nav class="pagination noprt">
+
+</nav>
+</div>
+<div id="main-wrapper">
+<section id="main">
+<header id="nodeDecoration"><h1 id="nodeTitle">To backtrack or not to backtrack (2a. Parte)</h1></header>
+<article class="iDevice_wrapper FreeTextIdevice" id="id0">
+<div class="iDevice emphasis0">
+<div id="ta0_85" class="block iDevice_content">
+<div class="_2cuy _3dgx" data-block="true" data-editor="8ucb1" data-offset-key="erjvb-0-0">
+<div data-offset-key="erjvb-0-0" class="_1mf _1mj" style="text-align: justify;">En el artículo anterior analizamos una alternativa de fuerza bruta para dar solución al problema de las ocho damas, y dijimos que reimplementarlo haciendo uso de una estrategia algo más efectiva, en este caso usando una cola de prioridad.</div>
+<div data-offset-key="erjvb-0-0" class="_1mf _1mj" style="text-align: justify;"><br style="clear: both;" />Recordemos que las colas son estructuras de datos FIFO (Primero en Entrar, Primero en Salir), es decir los "clientes" se atienden en el orden en que llegan; existen tambien colas de prioridad (Priority Queue) que son más parecidas a las cola en nuestro país, si usted conoce al que atiende o a alguien que está más adelante en la cola usted podrá saltarse unos cuantos puestos de acuerdo a su nivel de confianza con dicha persona (la prioridad) que tenga. La diferencia entre las dos colas se muestra en la siguiente imagen.</div>
+<div data-offset-key="erjvb-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="erjvb-0-0" class="_1mf _1mj" style="text-align: center;"><br style="clear: both;" /><img src="P_queue.png" alt="cola de prioridad" title="Clases de Colas" width="480" height="355" /></div>
+<div data-offset-key="erjvb-0-0" class="_1mf _1mj"><br /><span data-offset-key="erjvb-0-0"></span></div>
+</div>
+<div class="_2cuy _3dgx" data-block="true" data-editor="8ucb1" data-offset-key="3fc79-0-0">
+<div data-offset-key="3fc79-0-0" class="_1mf _1mj" style="text-align: justify;"><span data-offset-key="3fc79-0-4">Vamos a aprovechar esta característica de las colas de prioridad para crear una cola con las casillas que aún están libres dentro del tablero, asignando como prioridad el número de casillas ocupadas que quedarían en el tablero una vez una dama fuera  jugada en esa casilla, y haremos que el algoritmo de backtracking pruebe primero con las casillas más prometedoras, aquellas que dejarían mayor cantidad de celdas libres en el tablero.</span></div>
+<div data-offset-key="3fc79-0-0" class="_1mf _1mj" style="text-align: justify;"><span data-offset-key="3fc79-0-4"></span></div>
+<div data-offset-key="3fc79-0-0" class="_1mf _1mj" style="text-align: justify;"><span data-offset-key="3fc79-0-4">De paso realizamos refactorización del código siguiendo el principio de una sola responsabilidad que dice que cad función o método debe hacer una sola tarea, termminando en que nuestra función damas ha delegado gran parte de las responsabilidades que tenía en funciones auxiliares.</span></div>
+<div data-offset-key="3fc79-0-0" class="_1mf _1mj" style="text-align: justify;"><span data-offset-key="3fc79-0-4"></span></div>
+<div data-offset-key="3fc79-0-0" class="_1mf _1mj" style="text-align: justify;">
+<div class="highlighted-code language-python">
+<div>
+<pre><code>def damas(numero, tablero, actual):
+    global cont
+    cont = cont + 1
+    nuevoTablero = determinarNuevoTablero(tablero, actual)
+    if (numero == 8):
+        print ("Exito")
+        for fila in nuevoTablero:
+            print (fila)
+        return True
+    else:
+        colaP = crearColaCeldasLibres(nuevoTablero)
+        while (not colaP.empty()):
+            (n, (i, j)) = colaP.get()
+            if (damas (numero + 1, nuevoTablero, (i, j))):
+                return True
+        return False</code></pre>
+</div>
+</div>
+<span data-offset-key="3fc79-0-4"><br /></span></div>
+<div data-offset-key="3fc79-0-0" class="_1mf _1mj" style="text-align: justify;"><span data-offset-key="3fc79-0-4"></span></div>
+</div>
+<div class="_2cuy _3dgx" data-block="true" data-editor="8ucb1" data-offset-key="o0js-0-0">
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"><span data-offset-key="o0js-0-0">En el fragmento de código anterior vemos que se han delegado las siguientes responsabilidades: </span></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;">
+<ul>
+<li><span style="font-size: 15.12px;">Calcular el nuevo estado del tablero: función determinarNuevoTablero.</span></li>
+<li><span style="font-size: 15.12px;">Identificar las celdas libres (y de paso crear una cola con ellas): función crearColaCeldasLibres</span></li>
+</ul>
+</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"><br style="clear: both;" />Una vez se tiene la cola con las celdas libres ordenadas se recorre dicha cola y se prueba con cada una de las celdas, hasta encontrar una que permita hayar la solución del problema.</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;">Veamos entonces cada una de las funciones auxiliares:</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;">
+<div class="highlighted-code language-python">
+<div>
+<pre><code>def determinarNuevoTablero (tablero, actual):
+    x,y = actual
+    nuevoTablero = deepcopy(tablero)
+    nuevoTablero[x][y] = "X"
+    sumIndices = x + y
+    difIndices = x - y
+    for i in range (8):
+        if (nuevoTablero[i][y] == "_"):
+            nuevoTablero[i][y] = "Y"
+        if (nuevoTablero[x][i] == "_"):
+            nuevoTablero[x][i] = "Y"
+        j = sumIndices - i
+        if (j &gt;=0 and j &lt;= 7 and nuevoTablero[i][j] == "_"):
+            nuevoTablero[i][j] = "Y"
+        j = i - difIndices
+        if (j &gt;=0 and j &lt;= 7 and nuevoTablero[i][j] == "_"):
+            nuevoTablero[i][j] = "Y"
+    return nuevoTablero</code></pre>
+</div>
+</div>
+Esta función se encarga de determinar el nuevo estado el tablero tal y como se hacia anteriormente dentro de la función damas.</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;">
+<div class="highlighted-code language-python">
+<div>
+<pre><code>def crearColaCeldasLibres (tablero):
+    colaP = PriorityQueue()
+    for i in range(8):
+        for j in range(8):
+                if (tablero[i][j] == "_"):
+                    tableroSiColocaIJ = determinarNuevoTablero (tablero, (i,j))
+                    celdasOcupadasIJ = determinarCeldasOcupadas (tableroSiColocaIJ)
+                    colaP.put ((celdasOcupadasIJ, (i,j)))
+    return colaP
+</code></pre>
+</div>
+</div>
+Esta función hace uso de la clase PriorityQueue de Python, la cual como su nombre lo dice representa una cola prioritaria, en la cual se inserta cada par coordenado (i, j) precedido de la prioridad asignada a la coordenada correspondiente, esta prioridad como ya se mencionó anteriormente es simplemente el número de casillas vacías que quedarían en el tablero en caso de jugar una dama en la casilla determinada por la coordenada (i, j), partiendo de la premisa que entre diferentes posibilidades es mejor probar primero aquella que deja más casillas disponibles para las damas restantes. Veamos finalmente el código de la función determinarCeldasOcupadas.</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;">
+<div class="highlighted-code language-python">
+<div>
+<pre><code>def determinarCeldasOcupadas (tablero):
+    contOcupadas = 0
+    for i in range(8):
+        for j in range(8):
+            if (tablero[i][j] != "_"):
+                contOcupadas = contOcupadas + 1
+    return contOcupadas</code></pre>
+</div>
+</div>
+<br />Finalmente inicializamos el tablero, y el contador de iteraciones, asegurándonos que la posición inicial en cada repetición sea aleatoria con el fin de dar comienzo a las pruebas de rendimiento que realizaremos, número de iteraciones representado en llamados recursivos a la función damas y tiempo de ejecución del código.</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;">
+<div class="highlighted-code language-python">
+<div>
+<pre><code>tablero = [ ["_" for x in range (8)] for y in range(8)]
+cont = 0
+seed()
+numRepeticiones = 10
+tiempoInicial = time()
+for i in range (numRepeticiones):
+    damas(1, tablero , (randint(0,7), randint(0,7)))
+tiempoTranscurrido = time() - tiempoInicial
+print ()
+print ("*** Algoritmo con cola de prioridad ***")
+print ("Con un total de " + str(numRepeticiones) + " repeticiomes")
+print ("Total: " + str(cont) + " iteraciones")
+print ("Con tiempo de: " +str(tiempoTranscurrido) + " segundos")</code></pre>
+</div>
+</div>
+</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;">Lo mismo haremos con el algoritmo de fuerza bruta con el fin de poder realizar la comparación entre los dos.</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"><br style="clear: both;" />
+<table style="width: 100%;">
+<tbody>
+<tr>
+<td style="text-align: center;"><span style="font-size: 12pt;">Cola de Prioridad</span></td>
+<td style="text-align: center;"><span style="font-size: 12pt;">Fuerza Bruta</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span style="font-size: 12pt;"><img src="img4.png" width="300" height="175" /></span></td>
+<td style="text-align: center;"><span style="font-size: 12pt;"><img src="img5.png" width="300" height="175" /></span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><img src="img3.png" width="300" height="175" alt="cola prioridad 50 repeticiones" /></td>
+<td style="text-align: center;"><img src="img4.1.png" width="300" height="175" alt="fuerza bruta 50 repeticiones" /></td>
+</tr>
+<tr>
+<td style="text-align: center;"><img src="img5.1.png" width="300" height="175" alt="cola prioridad 100 repeticiones" /></td>
+<td style="text-align: center;"><img src="img6.png" width="300" height="175" alt="fuerza bruta 100 repeticiones" /></td>
+</tr>
+<tr>
+<td><img src="img7.png" width="300" height="175" alt="cola prioridad 500 repeticiones" style="display: block; margin-left: auto; margin-right: auto;" /></td>
+<td><img src="img8.png" width="300" height="175" alt="fuerza bruta 500 repeticiones" style="display: block; margin-left: auto; margin-right: auto;" /></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: center;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: center;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: center;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: center;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"><br style="clear: both;" />A pesar de que existen variaciones se puede observar que el algoritmo que hace uso de una cola de prioridad es más rápido que el algoritmo de fuerza bruta requiriendo en promedio 5 veces menos llamados recursivos y usando la mitad del tiempo; aunque es necesario notar que esta mejora en número de llamados recursivos y tiempo de ejecución viene con el costo de que la solución con cola de prioridad usa más memoria que la solución de fuerza bruta, ya que cada llamada a cada una de las funciones auxiliares hace uso de la pila asignada por el sistema operativo a nuestro programa, además de hacer uso de una estructura de datos adicional como lo es la cola.</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;">Es importante que tengamos en cuenta que nuestras funciones y aplicaciones pueden y ser perfiladas para analizar el consumo de memoria y el tiempo de ejecución de las mismas, sin caer en el error de pensar en optimizar antes de tener una solución completa, porque como reza la sabiduría popular "optimizar antes de tiempo es la madre de todos los problemas".</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;">Terminamos por ahora este artículo y quedamos pendientes de muchos más temas que vamos a explorar: recursividad, programación funcional, patrones de diseño, programación reactiva, lenguajes pasados, presentes y otros con gran futuro.</div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: center;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: center;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: center;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: center;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: center;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj" style="text-align: justify;"></div>
+<div data-offset-key="o0js-0-0" class="_1mf _1mj"></div>
+</div>
+</div>
+</div>
+</article>
+<div id="packageLicense" class="cc cc-by-sa">
+<p><span>Obra publicada con</span> <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Reconocimiento Compartir igual 4.0</a></p>
+</div>
+</section>
+</div>
+<div id='bottomPagination'>
+<nav class="pagination noprt">
+
+</nav>
+</div>
+</div>
+<script type="text/javascript" src="_style_js.js"></script></body></html>
